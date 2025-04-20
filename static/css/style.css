@@ -1,0 +1,108 @@
+/* reset & base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html, body {
+  height: 100%;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  background-color: #fafafa;
+}
+
+/* full‑height flex container */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* scrolling history pane */
+.chat-history {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+}
+
+/* chat bubbles */
+.message {
+  max-width: 80%;
+  margin-bottom: 8px;
+  padding: 12px;
+  border-radius: 18px;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+
+/* user bubble (right) */
+.message.user {
+  margin-left: auto;
+  background-color: #10a37f; /* ChatGPT green */
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+/* assistant bubble (left) */
+.message.assistant {
+  margin-right: auto;
+  background-color: #f1f0f0;
+  color: #000;
+  border-bottom-left-radius: 4px;
+}
+
+/* sticky input bar at bottom */
+.input-bar {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  background: #fff;
+  border-top: 1px solid #e0e0e0;
+  /* make sure it stays visible */
+  position: sticky;
+  bottom: 0;
+}
+
+/* the text input */
+.input-bar textarea {
+  flex: 1;
+  border: 1px solid #e0e0e0;
+  border-radius: 20px;
+  padding: 10px 15px;
+  font-size: 16px;
+  resize: none;
+  height: 40px;
+  max-height: 80px;
+  outline: none;
+}
+
+/* the send button */
+.input-bar button {
+  margin-left: 8px;
+  background: #10a37f;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 0 16px;
+  height: 40px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.input-bar button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* 📱 Mobile tweaks */
+@media (max-width: 480px) {
+  .message {
+    max-width: 90%;
+    font-size: 15px;
+  }
+  .input-bar textarea {
+    font-size: 15px;
+  }
+  .input-bar button {
+    font-size: 15px;
+    padding: 0 12px;
+  }
+}

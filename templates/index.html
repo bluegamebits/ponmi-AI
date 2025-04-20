@@ -1,8 +1,20 @@
-<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> 
-  <title>ChatGot‑Gemini</title>
-</head> <body> <h1>ChatGot (Gemini)</h1> <textarea id="prompt" rows="5" cols="60" 
-  placeholder="Ask me anything…"></textarea><br> <button id="send">Send</button> 
-  <pre id="response"></pre> <script src="{{ url_for('static', 
-  filename='js/chat.js') }}"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- ensure proper scaling on mobile -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ChatGot (Gemini)</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="chat-container">
+    <div id="chat-history" class="chat-history"></div>
+    <div class="input-bar">
+      <textarea id="prompt" placeholder="Type your message…"></textarea>
+      <button id="send">Send</button>
+    </div>
+  </div>
+  <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
 </body>
 </html>

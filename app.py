@@ -1,11 +1,11 @@
 import os
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, jsonify, render_template
 import requests
 
 app = Flask(__name__)
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-GEMINI_URL     = "https://gemini.googleapis.com/v1/models/text-bison-001:generateText"
+GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-04-17:generateContent"
 
 @app.route("/")
 def home():
@@ -13,26 +13,31 @@ def home():
 
 @app.route("/chat", methods=["POST"])
 def chat():
-    data = request.json
-    prompt = data.get("prompt", "")
+    prompt = request.json.get("prompt", "")
     if not prompt:
-        return jsonify(error="No prompt provided"), 400
+        return jsonify(error="No prompt"), 400
 
     headers = {
-        "Authorization": f"Bearer {GEMINI_API_KEY}",
         "Content-Type": "application/json"
     }
-    body = {
-        "prompt": {"text": prompt},
-        "temperature": 0.7
+    params = {
+        "key": GEMINI_API_KEY
     }
-    resp = requests.post(GEMINI_URL, headers=headers, json=body)
+    body = {
+        "contents": [
+            {"parts": [{"text": prompt}]}
+        ],
+        # Optional: You can adjust the "thinking" level
+        # "thinkingBudget": 0
+    }
+
+    resp = requests.post(GEMINI_URL, headers=headers, params=params, json=body)
     if not resp.ok:
         return jsonify(error=resp.text), resp.status_code
 
-    result = resp.json()
-    text = result.get("candidates", [{}])[0].get("output", "")
-    return jsonify(reply=text)
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    try:
+        data = resp.json()
+        reply = data["candidates"][0]["content"]["parts"][0]["text"]
+        return jsonify(reply=reply)
+    except Exception as e:
+        return jsonify(error="Failed to parse response", details=str(e)), 500
